@@ -6,6 +6,8 @@
 and uses the result as the tab favicon. It is a browser-only library and exposes
 one public method: `initFavicon`.
 
+[Open the live demo](https://biu8bo.github.io/live-favicon/)
+
 ## Install
 
 ```bash
@@ -106,3 +108,13 @@ npm test
 - `dist/live-favicon.esm.js`: named ESM export, `initFavicon`
 - `dist/live-favicon.iife.js`: script-tag global, `LiveFavicon.initFavicon`
 - `dist/index.d.ts`: TypeScript declaration for the ESM package entry
+
+## GitHub Pages demo
+
+The repository includes a static, bilingual demo in `docs/`. Each build copies
+the IIFE and ESM browser bundles to `docs/assets/`, so the page can run directly
+on GitHub Pages without a separate deployment build.
+
+To publish it, open the repository **Settings > Pages**, choose **Deploy from a
+branch**, then select branch `main` and folder `/docs`. GitHub Pages will serve
+the demo at `https://biu8bo.github.io/live-favicon/` after deployment completes.

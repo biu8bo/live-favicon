@@ -31,3 +31,16 @@ test('package type declaration describes the sole method', async () => {
   assert.match(declaration, /export declare function initFavicon/);
   assert.match(declaration, /stop\(\): void/);
 });
+
+test('GitHub Pages demo receives both browser bundles', async () => {
+  const [page, iife, esm] = await Promise.all([
+    readFile('docs/index.html', 'utf8'),
+    readFile('docs/assets/live-favicon.iife.js', 'utf8'),
+    readFile('docs/assets/live-favicon.esm.js', 'utf8')
+  ]);
+
+  assert.match(page, /\.\/assets\/live-favicon\.iife\.js/);
+  assert.match(page, /\.\/assets\/live-favicon\.esm\.js/);
+  assert.match(iife, /LiveFavicon/);
+  assert.match(esm, /export \{ initFavicon \}/);
+});

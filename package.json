@@ -21,7 +21,7 @@
     "README.zh-CN.md"
   ],
   "scripts": {
-    "build": "rollup --config && node scripts/copy-types.mjs && node scripts/copy-example-bundles.mjs",
+    "build": "rollup --config && node scripts/copy-types.mjs && node scripts/copy-docs-bundles.mjs",
     "clean": "node scripts/clean-build-output.mjs",
     "test": "npm run build && node --test test/*.test.mjs"
   },
