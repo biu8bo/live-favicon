@@ -1,6 +1,6 @@
 {
   "name": "live-favicon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turn the current browser viewport into a live favicon.",
   "license": "MIT",
   "type": "module",

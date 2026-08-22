@@ -1712,6 +1712,24 @@ var LiveFavicon = (function (exports) {
     };
   }
 
+  const VERSION = '1.0.1';
+  const REPOSITORY_URL = 'https://github.com/biu8bo/live-favicon';
+  let introductionPrinted = false;
+
+  function printIntroduction() {
+    if (introductionPrinted || typeof console === 'undefined') {
+      return;
+    }
+
+    introductionPrinted = true;
+    console.info(
+      `%c live-favicon %c v${VERSION} `,
+      'background: #e56b8d; color: #ffffff; padding: 4px 12px; font: 700 14px monospace;',
+      'background: #f0a3a8; color: #ffffff; padding: 4px 12px; font: 700 14px monospace;'
+    );
+    console.info(`GitHub: ${REPOSITORY_URL}`);
+  }
+
   function normalizeInterval(value) {
     return Number.isFinite(value) && value > 0 ? value : DEFAULT_INTERVAL;
   }
@@ -1728,6 +1746,7 @@ var LiveFavicon = (function (exports) {
     const delay = normalizeInterval(interval);
     const iconSize = ICON_SIZES[normalizeLevel(level)];
     const favicon = createFaviconManager();
+    printIntroduction();
     let active = true;
     let timerId = null;
     let frameId = null;

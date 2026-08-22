@@ -1,31 +1,34 @@
 # live-favicon
 
-[中文](README.md) | [English](README.en-US.md)
+[English](README.md) | [中文](README.zh-CN.md)
 
-`live-favicon` 会持续截取浏览器当前可见视窗，压缩后将结果设为浏览器标签页图标。它仅适用于浏览器环境，且只暴露一个公开方法：`initFavicon`。
+`live-favicon` repeatedly captures the browser's current viewport, downsizes it,
+and uses the result as the tab favicon. It is a browser-only library and exposes
+one public method: `initFavicon`.
 
-## 安装
+## Install
 
 ```bash
 npm install live-favicon
 ```
 
-## 使用方法
+## Usage
 
 ### ESM
 
-Vite、Webpack、Rollup 等打包器会自动解析 ESM 入口。
+Bundlers such as Vite, Webpack, and Rollup resolve the ESM entry automatically.
 
 ```js
 import { initFavicon } from 'live-favicon';
 
 const controller = initFavicon();
-// controller.stop(); // 停止更新并还原原始 favicon
+// controller.stop(); // stop updates and restore the original favicon
 ```
 
-### 直接使用 script 标签
+### Direct script tag
 
-将 `dist/live-favicon.iife.js` 复制到静态资源目录后引入。唯一的全局变量是 `LiveFavicon`，其唯一方法为 `initFavicon`。
+Copy `dist/live-favicon.iife.js` to a publicly served directory, then load it.
+The only global is `LiveFavicon`, whose only method is `initFavicon`.
 
 ```html
 <script src="/assets/live-favicon.iife.js"></script>
@@ -41,31 +44,56 @@ const controller = initFavicon();
 initFavicon(interval = 1000, level = 2)
 ```
 
-| 参数 | 默认值 | 说明 |
+| Parameter | Default | Meaning |
 | --- | --- | --- |
-| `interval` | `1000` | 更新周期，单位为毫秒。非法值或非正数会回退为 `1000`。 |
-| `level` | `2` | PNG favicon 的输出尺寸：`1` 为 16x16，`2` 为 32x32，`3` 为 64x64。非法值会回退为 `2`。 |
+| `interval` | `1000` | Milliseconds between updates. Invalid or non-positive values fall back to `1000`. |
+| `level` | `2` | PNG favicon output size: `1` is 16x16, `2` is 32x32, and `3` is 64x64. Invalid values fall back to `2`. |
 
-方法返回的控制器提供 `stop()`。调用后会取消后续任务，并还原原有图标；如果图标标签由本库创建，则会移除该标签。
+The returned controller has `stop()`. It cancels future work and restores the
+original icon, or removes the icon tag that the library created.
 
-## 工作原理
+## How it works
 
-本库使用 [modern-screenshot](https://github.com/qq15725/modern-screenshot) 渲染 `document.documentElement`，结合当前滚动偏移并裁剪到 `window.innerWidth` 与 `window.innerHeight`，从而获得当前可见视窗。之后用 Canvas 或 OffscreenCanvas 将截图压缩为 16x16、32x32 或 64x64 像素。64x64 是最大等级，因为它仍处于浏览器普遍接受的 favicon 尺寸范围内。
+The library uses [modern-screenshot](https://github.com/qq15725/modern-screenshot)
+to render `document.documentElement` with the current scroll offset, clipped to
+`window.innerWidth` and `window.innerHeight`. The resulting viewport PNG is then
+downscaled on a Canvas or OffscreenCanvas to 16x16, 32x32, or 64x64 pixels.
+64x64 is the largest level because it remains within the commonly supported
+favicon size limit.
 
-最终的 `data:image/png;base64,...` 会赋给页面中第一个已有的 `<link rel="icon">`；若不存在，则在 `<head>` 中动态创建一个。PNG 是无损格式，现代浏览器普遍支持，且可直接作为自包含 data URL 使用，不需要额外请求服务器资源。
+The final `data:image/png;base64,...` URL is assigned to the first existing
+`<link rel="icon">`; if none exists, the library creates one in `<head>`. PNG is
+used because it is lossless, universally understood by current browsers, and
+works directly as a self-contained data URL without a server round trip.
 
-## 性能
+## Performance
 
-更新任务会先等待设定的周期，再在 `requestAnimationFrame` 中启动 DOM 与 Canvas 工作。截图任务不会重叠，最终图标 Canvas 最大只有 64x64，因此缩放和 PNG 编码成本很低。在中等配置机器和普通复杂度页面上，单次截图、压缩、设置图标的目标总耗时为 **50 ms 以内**。实际截图耗时主要受页面复杂度、字体和图像数量影响；对高开销页面可增大 `interval` 或选择 `level` 为 `1`。当 `document.hidden` 为 `true` 时，本库会自动暂停；标签页恢复可见后会立即安排一次更新。
+Updates are requested after the configured interval and their DOM/canvas work is
+started in `requestAnimationFrame`. Captures never overlap. The icon canvas is at
+most 64x64, so final resize and PNG encoding are deliberately small. On a
+middle-tier machine and an ordinary-complexity page, the target for one capture,
+compression, and favicon assignment is **50 ms or less**. Actual capture time is
+dominated by page complexity and fonts/images: for expensive pages, increase
+`interval` or choose level `1`. The library automatically pauses while
+`document.hidden` is true and schedules an immediate update when the tab becomes
+visible again.
 
-## 浏览器兼容性与已知限制
+## Browser support and limitations
 
-- 当前版本的 Chromium、Firefox 和 Safari 均支持在普通网页上下文中动态修改 favicon 链接。部分浏览器界面会缓存旧图标，因此标签栏、固定标签、历史记录、书签和应用快捷方式可能延迟更新或完全不更新。Safari 对动态 favicon 的缓存历来比 Chromium 和 Firefox 更积极。
-- `modern-screenshot` 依赖浏览器 DOM 与 Canvas 能力，本库不支持 SSR。请仅在客户端代码中初始化。
-- 跨域图像、CSS 资源、字体或 iframe 内容可能污染 Canvas，或使 DOM 渲染失败。导出失败会被捕获并静默跳过本次更新，之后的定时任务仍会继续运行。
-- 截图保真度受浏览器 DOM/Canvas 和同源策略限制。页面非常大或图形结构非常复杂时，单次任务可能无法满足 50 ms 目标。
+- Current Chromium, Firefox, and Safari support dynamically changing a favicon
+  link in normal browsing contexts. Some browser UI surfaces cache the old icon,
+  so tab strips, pinned tabs, history, bookmarks, and application shortcuts may
+  update late or not at all. Safari has historically cached dynamic favicons more
+  aggressively than Chromium and Firefox.
+- `modern-screenshot` requires browser DOM and canvas features; this package does
+  not run during SSR. Initialize it only in client-side code.
+- Cross-origin images, CSS assets, fonts, or iframe content can make a canvas
+  tainted or prevent a DOM render. A failed export is caught and that update is
+  silently skipped; later updates keep running.
+- Screenshot fidelity follows the browser's DOM/canvas and same-origin rules.
+  Very large or graphically complex pages may exceed the 50 ms target.
 
-## 开发与构建
+## Development
 
 ```bash
 npm install
@@ -73,8 +101,8 @@ npm run build
 npm test
 ```
 
-`npm run build` 从同一个 `src/index.js` 入口生成两份产物：
+`npm run build` produces both distributions from the same `src/index.js` entry:
 
-- `dist/live-favicon.esm.js`：具名 ESM 导出 `initFavicon`
-- `dist/live-favicon.iife.js`：通过 script 标签使用的全局方法 `LiveFavicon.initFavicon`
-- `dist/index.d.ts`：ESM 包入口对应的 TypeScript 类型声明
+- `dist/live-favicon.esm.js`: named ESM export, `initFavicon`
+- `dist/live-favicon.iife.js`: script-tag global, `LiveFavicon.initFavicon`
+- `dist/index.d.ts`: TypeScript declaration for the ESM package entry

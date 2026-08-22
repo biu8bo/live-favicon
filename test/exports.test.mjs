@@ -13,6 +13,19 @@ test('IIFE bundle exposes LiveFavicon.initFavicon', async () => {
   assert.match(bundle, /initFavicon/);
 });
 
+test('bundles include the console introduction and repository link', async () => {
+  const [esm, iife] = await Promise.all([
+    readFile('dist/live-favicon.esm.js', 'utf8'),
+    readFile('dist/live-favicon.iife.js', 'utf8')
+  ]);
+
+  for (const bundle of [esm, iife]) {
+    assert.match(bundle, /live-favicon/);
+    assert.match(bundle, /VERSION = ['"]1\.0\.1['"]/);
+    assert.match(bundle, /https:\/\/github\.com\/biu8bo\/live-favicon/);
+  }
+});
+
 test('package type declaration describes the sole method', async () => {
   const declaration = await readFile('dist/index.d.ts', 'utf8');
   assert.match(declaration, /export declare function initFavicon/);
