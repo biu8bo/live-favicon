@@ -35,15 +35,16 @@ body {
 }
 
 .motion-field { position: fixed; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
-.motion-scan { position: absolute; left: -4vw; width: 108vw; height: 54px; border-top: 1px solid rgb(102 229 164 / 0.22); border-bottom: 1px solid rgb(123 220 246 / 0.1); opacity: 0; transform: translateY(-12vh); animation: viewport-scan 8s linear infinite; }
-.motion-scan::after { position: absolute; top: 12px; left: 17%; width: 19%; height: 1px; background: var(--green); box-shadow: 28vw 16px 0 rgb(123 220 246 / 0.72), 57vw 5px 0 rgb(102 229 164 / 0.58); content: ""; }
-.motion-scan:nth-child(2) { animation-delay: -4s; }
+.motion-scan { position: absolute; top: -18vh; left: -40vw; width: 34vw; height: 140vh; background: var(--green); opacity: 0; transform: translate3d(-8vw, 0, 0) rotate(-13deg); animation: viewport-scan 3.4s linear infinite; }
+.motion-scan:nth-child(2) { background: var(--cyan); animation-delay: -1.7s; }
 .site-header, .shell, .footer { position: relative; z-index: 1; }
 
 @keyframes viewport-scan {
-  0%, 8% { opacity: 0; transform: translateY(-12vh); }
-  13%, 74% { opacity: 0.72; }
-  87%, 100% { opacity: 0; transform: translateY(112vh); }
+  0% { opacity: 0; transform: translate3d(-8vw, 0, 0) rotate(-13deg); }
+  12% { opacity: 0.22; }
+  52% { opacity: 0.16; }
+  88% { opacity: 0.22; }
+  100% { opacity: 0; transform: translate3d(172vw, 0, 0) rotate(-13deg); }
 }
 
 button, code, .mono, .stat-value, .eyebrow { font-family: "JetBrains Mono", Consolas, monospace; }
