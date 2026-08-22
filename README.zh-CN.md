@@ -80,9 +80,3 @@ npm test
 - `dist/live-favicon.esm.js`：具名 ESM 导出 `initFavicon`
 - `dist/live-favicon.iife.js`：通过 script 标签使用的全局方法 `LiveFavicon.initFavicon`
 - `dist/index.d.ts`：ESM 包入口对应的 TypeScript 类型声明
-
-## GitHub Pages 演示部署
-
-仓库在 `docs/` 中提供了静态的中英文演示页。每次构建都会将 IIFE 与 ESM 浏览器产物复制到 `docs/assets/`，因此 GitHub Pages 无需额外构建即可直接运行。
-
-进入仓库的 **Settings > Pages**，选择 **Deploy from a branch**，然后选择 `main` 分支与 `/docs` 目录。部署完成后，演示页地址为 `https://biu8bo.github.io/live-favicon/`。
