@@ -6,9 +6,10 @@
     <meta name="description" content="live-favicon 浏览器直引示例">
     <title>live-favicon | 直引演示</title>
     <link rel="stylesheet" href="../demo.css">
-    <script src="../../dist/live-favicon.iife.js"></script>
+    <script src="./live-favicon.iife.js"></script>
   </head>
   <body>
+    <div class="motion-field" aria-hidden="true"><span class="motion-scan"></span><span class="motion-scan"></span></div>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="live-favicon 首页"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>live-favicon</a>
       <span class="header-note">浏览器直引 / IIFE</span>
@@ -52,7 +53,7 @@
         <div class="usage-intro"><p class="eyebrow">SCRIPT TAG</p><h2 id="usage-title">不需要打包器。</h2><p>加载单个 IIFE 文件后，直接调用唯一的公开方法即可开始。</p><a href="../../README.zh-CN.md">阅读中文文档</a></div>
         <div class="code-panel" aria-label="浏览器直引代码示例"><pre><span class="key">&lt;script</span> src=<span class="str">"/assets/live-favicon.iife.js"</span><span class="key">&gt;&lt;/script&gt;</span>
 <span class="key">&lt;script&gt;</span>
-  <span class="key">const</span> controller = LiveFavicon.<span class="fn">initFavicon</span>();
+  <span class="key">const</span> controller = LiveFavicon.<span class="fn">initFavicon</span>(<span class="str">500</span>);
   <span class="comment">// controller.stop()：停止并还原图标</span>
 <span class="key">&lt;/script&gt;</span></pre></div>
       </section>

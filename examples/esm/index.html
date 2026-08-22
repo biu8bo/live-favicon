@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../demo.css">
   </head>
   <body>
+    <div class="motion-field" aria-hidden="true"><span class="motion-scan"></span><span class="motion-scan"></span></div>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="live-favicon 首页"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>live-favicon</a>
       <span class="header-note">模块化导入 / ESM</span>
@@ -26,12 +27,12 @@
       <section class="section" aria-labelledby="features-title"><div class="section-heading"><h2 id="features-title">小而完整的浏览器能力。</h2><p>页面不可见时自动暂停；发生跨域导出错误时仅跳过当前帧，后续更新不受影响。</p></div><div class="feature-grid"><article class="feature"><span class="feature-index">01 / VIEWPORT</span><h3>只截取你看到的部分</h3><p>按当前滚动位置裁剪，不会把整张长页面塞进 16 到 64 像素的图标。</p></article><article class="feature"><span class="feature-index">02 / PNG</span><h3>三档有效尺寸</h3><p>从 16x16 到 64x64，统一生成自包含 PNG data URL，无需额外静态资源。</p></article><article class="feature"><span class="feature-index">03 / CONTROL</span><h3>随时恢复原图标</h3><p>控制器的 stop() 会取消任务，并将 favicon 恢复为初始化之前的状态。</p></article></div></section>
       <section id="usage" class="usage" aria-labelledby="usage-title"><div class="usage-intro"><p class="eyebrow">ES MODULE</p><h2 id="usage-title">与任意打包器协作。</h2><p>使用具名导出，Vite、Webpack 和 Rollup 都会自动解析正确的 ESM 入口。</p><a href="../../README.zh-CN.md">阅读中文文档</a></div><div class="code-panel" aria-label="ESM 导入代码示例"><pre><span class="key">import</span> { <span class="fn">initFavicon</span> } <span class="key">from</span> <span class="str">'live-favicon'</span>;
 
-<span class="key">const</span> controller = <span class="fn">initFavicon</span>(<span class="str">1000</span>, <span class="str">2</span>);
+<span class="key">const</span> controller = <span class="fn">initFavicon</span>(<span class="str">500</span>, <span class="str">2</span>);
 <span class="comment">// controller.stop()：停止并还原图标</span></pre></div></section>
     </main>
     <footer class="shell footer"><p>live-favicon / ESM demo</p><p>滚动、切换状态，然后观察此标签页。</p></footer>
     <script type="module">
-      import { initFavicon } from '../../dist/live-favicon.esm.js';
+      import { initFavicon } from './live-favicon.esm.js';
       let controller = initFavicon(500);
       const toggle = document.querySelector('[data-toggle]');
       const status = document.querySelector('[data-status]');

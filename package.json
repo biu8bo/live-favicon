@@ -21,8 +21,8 @@
     "README.zh-CN.md"
   ],
   "scripts": {
-    "build": "rollup --config && node scripts/copy-types.mjs",
-    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "rollup --config && node scripts/copy-types.mjs && node scripts/copy-example-bundles.mjs",
+    "clean": "node scripts/clean-build-output.mjs",
     "test": "npm run build && node --test test/*.test.mjs"
   },
   "dependencies": {

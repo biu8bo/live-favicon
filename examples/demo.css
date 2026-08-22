@@ -22,6 +22,7 @@
 html { scroll-behavior: smooth; }
 
 body {
+  position: relative;
   min-width: 320px;
   margin: 0;
   color: var(--text);
@@ -31,6 +32,18 @@ body {
     var(--bg);
   background-size: 32px 32px;
   line-height: 1.5;
+}
+
+.motion-field { position: fixed; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
+.motion-scan { position: absolute; left: -4vw; width: 108vw; height: 54px; border-top: 1px solid rgb(102 229 164 / 0.22); border-bottom: 1px solid rgb(123 220 246 / 0.1); opacity: 0; transform: translateY(-12vh); animation: viewport-scan 8s linear infinite; }
+.motion-scan::after { position: absolute; top: 12px; left: 17%; width: 19%; height: 1px; background: var(--green); box-shadow: 28vw 16px 0 rgb(123 220 246 / 0.72), 57vw 5px 0 rgb(102 229 164 / 0.58); content: ""; }
+.motion-scan:nth-child(2) { animation-delay: -4s; }
+.site-header, .shell, .footer { position: relative; z-index: 1; }
+
+@keyframes viewport-scan {
+  0%, 8% { opacity: 0; transform: translateY(-12vh); }
+  13%, 74% { opacity: 0.72; }
+  87%, 100% { opacity: 0; transform: translateY(112vh); }
 }
 
 button, code, .mono, .stat-value, .eyebrow { font-family: "JetBrains Mono", Consolas, monospace; }
@@ -186,4 +199,5 @@ h1 .accent { color: var(--green); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  .motion-scan { display: none; }
 }
